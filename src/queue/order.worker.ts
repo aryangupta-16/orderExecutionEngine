@@ -4,9 +4,9 @@ import { OrderRepository } from "../db/order.repository";
 import { DexRouter } from "../dex/router";
 import { redis } from "../config/redis";
 
-const dexRouter = new DexRouter();
+export const dexRouter = new DexRouter();
 
-async function processOrder(job: Job<OrderJobData>) {
+export async function processOrder(job: Job<OrderJobData>) {
   const { orderId, inputToken, outputToken, amount, slippage } = job.data;
   
   console.log(orderId,"orderId in worker");

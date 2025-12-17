@@ -33,10 +33,16 @@
     "uuid": "^13.0.0"
   },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "@types/node": "^25.0.2",
     "@types/pg": "^8.16.0",
+    "@types/supertest": "^6.0.3",
     "@types/ws": "^8.18.1",
+    "ioredis-mock": "^8.13.1",
+    "jest": "^30.2.0",
     "prisma": "^7.1.0",
+    "supertest": "^7.1.4",
+    "ts-jest": "^29.4.6",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.3"
   }
