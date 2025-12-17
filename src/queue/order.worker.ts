@@ -1,98 +1,113 @@
 import { Worker, Job } from "bullmq";
-import { wsManager } from "../ws/ws.manager";
 import { OrderJobData } from "./order.queue";
 import { OrderRepository } from "../db/order.repository";
 import { DexRouter } from "../dex/router";
+import { redis } from "../config/redis";
 
 const dexRouter = new DexRouter();
 
 async function processOrder(job: Job<OrderJobData>) {
   const { orderId, inputToken, outputToken, amount, slippage } = job.data;
-
+  
+  console.log(orderId,"orderId in worker");
   try {
-    // =========================
-    // 1️⃣ ROUTING
-    // =========================
+    // ROUTING
     await OrderRepository.updateStatus(orderId, "ROUTING");
-    wsManager.send(orderId, { status: "ROUTING" });
 
+    await redis.publish(
+      "order_updates",
+      JSON.stringify({ orderId, status: "ROUTING" })
+    );
+
+    console.log("routing done");
     const bestQuote = await dexRouter.findBestRoute({
       inputToken,
       outputToken,
       amount,
       slippage,
     });
+
     // await new Promise((resolve) => setTimeout(resolve, 20000));
 
-    // Save selected DEX
     await OrderRepository.updateStatus(orderId, "ROUTING", {
       dex: bestQuote.dex,
     });
 
-    // =========================
-    // 2️⃣ BUILDING
-    // =========================
+    // BUILDING
     await OrderRepository.updateStatus(orderId, "BUILDING");
-    wsManager.send(orderId, {
-      status: "BUILDING",
-      dex: bestQuote.dex,
-    });
 
+    await redis.publish(
+      "order_updates",
+      JSON.stringify({
+        orderId,
+        status: "BUILDING",
+        dex: bestQuote.dex,
+      })
+    );
+
+    console.log("building done");
     const builtTx = await dexRouter.buildTransaction(bestQuote);
 
-    // =========================
-    // 3️⃣ SUBMITTING
-    // =========================
-    await OrderRepository.updateStatus(orderId, "SUBMITTED");
-    wsManager.send(orderId, {
-      status: "SUBMITTED",
-      dex: bestQuote.dex,
-    });
+    // await new Promise((resolve) => setTimeout(resolve, 20000));
 
+    // SUBMITTED
+    await OrderRepository.updateStatus(orderId, "SUBMITTED");
+
+    await redis.publish(
+      "order_updates",
+      JSON.stringify({
+        orderId,
+        status: "SUBMITTED",
+        dex: bestQuote.dex,
+      })
+    );
+
+    console.log("submitted done");
     const executionResult = await dexRouter.executeTransaction(builtTx);
 
-    // =========================
-    // 4️⃣ CONFIRMED
-    // =========================
+    console.log("execution done");
+    // CONFIRMED
     await OrderRepository.updateStatus(orderId, "CONFIRMED", {
       txHash: executionResult.txHash,
       executionPrice: executionResult.executionPrice,
     });
 
-    wsManager.send(orderId, {
-      status: "CONFIRMED",
-      txHash: executionResult.txHash,
-      executionPrice: executionResult.executionPrice,
-      dex: bestQuote.dex,
-    });
+    await redis.publish(
+      "order_updates",
+      JSON.stringify({
+        orderId,
+        status: "CONFIRMED",
+        txHash: executionResult.txHash,
+        executionPrice: executionResult.executionPrice,
+        dex: bestQuote.dex,
+      })
+    );
   } catch (error: any) {
     console.error("Worker error:", error);
 
-    // =========================
-    // ❌ FAILED
-    // =========================
     await OrderRepository.updateStatus(orderId, "FAILED", {
       error: error.message,
     });
 
-    wsManager.send(orderId, {
-      status: "FAILED",
-      error: error.message,
-    });
+    await redis.publish(
+      "order_updates",
+      JSON.stringify({
+        orderId,
+        status: "FAILED",
+        error: error.message,
+      })
+    );
 
-    throw error; // Important for BullMQ retries
+    throw error;
   }
 }
 
-// =========================
-// Worker setup
-// =========================
 export const orderWorker = new Worker<OrderJobData>(
   "order-execution",
   processOrder,
   {
     connection: {
-      url: process.env.REDIS_URL!, 
+      url: process.env.REDIS_URL!,
       tls: process.env.REDIS_URL?.startsWith("rediss://") ? {} : undefined,
     },
     concurrency: 5,

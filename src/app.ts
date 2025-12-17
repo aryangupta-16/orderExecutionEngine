@@ -2,6 +2,9 @@
 import Fastify from "fastify";
 import websocket from "@fastify/websocket";
 import pino from "pino";
+import cors from "@fastify/cors";
+import "./redis/redis.subscriber";
+
 // import "./queue/order.worker";
 
 
@@ -19,6 +22,9 @@ export function buildApp() {
   // Register WebSocket plugin
   app.register(websocket);
 
+  app.register(cors, {
+  origin: true, // allow all origins (dev)
+  });
   // Health check (very important for deployment)
   app.get("/health", async () => {
     return { status: "ok" };
