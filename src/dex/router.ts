@@ -21,7 +21,6 @@ export class DexRouter {
     if (quote.dex === "raydium") {
       return this.raydium.buildTransaction(quote)
     }
-
     return this.meteora.buildTransaction(quote)
   }
 
@@ -29,7 +28,6 @@ export class DexRouter {
     if (builtTx.dex === "raydium") {
       return this.raydium.submitTransaction(builtTx)
     }
-
     return this.meteora.submitTransaction(builtTx)
   }
 }
