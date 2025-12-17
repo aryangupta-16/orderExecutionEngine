@@ -3,6 +3,7 @@ import { prisma } from "../config/db";
 import { OrderStatus } from "../../generated/prisma/client";
 
 export interface CreateOrderData {
+  idempotencyKey: string;
   inputToken: string;
   outputToken: string;
   amount: number;
@@ -11,6 +12,13 @@ export interface CreateOrderData {
 }
 
 export const OrderRepository = {
+
+  findByIdempotencyKey: async (key: string) => {
+  return prisma.order.findUnique({
+    where: { idempotencyKey: key },
+  });
+},
+
   // Create a new order
   create: async (data: CreateOrderData) => {
     return prisma.order.create({

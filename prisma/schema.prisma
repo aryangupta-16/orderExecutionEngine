@@ -18,6 +18,9 @@ enum OrderStatus {
 
 model Order {
   id              String      @id @default(uuid())
+
+  idempotencyKey  String      @unique
+  
   inputToken      String
   outputToken     String
   amount          Float

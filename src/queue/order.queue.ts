@@ -12,7 +12,7 @@ export interface OrderJobData {
 
 export const orderQueue = new Queue<OrderJobData>("order-execution", {
   connection: {
-    host: "localhost",
-    port: 6379,
+    url: process.env.REDIS_URL!, 
+    tls: process.env.REDIS_URL?.startsWith("rediss://") ? {} : undefined,
   },
 });

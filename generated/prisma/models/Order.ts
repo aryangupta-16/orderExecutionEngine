@@ -40,6 +40,7 @@ export type OrderSumAggregateOutputType = {
 
 export type OrderMinAggregateOutputType = {
   id: string | null
+  idempotencyKey: string | null
   inputToken: string | null
   outputToken: string | null
   amount: number | null
@@ -56,6 +57,7 @@ export type OrderMinAggregateOutputType = {
 
 export type OrderMaxAggregateOutputType = {
   id: string | null
+  idempotencyKey: string | null
   inputToken: string | null
   outputToken: string | null
   amount: number | null
@@ -72,6 +74,7 @@ export type OrderMaxAggregateOutputType = {
 
 export type OrderCountAggregateOutputType = {
   id: number
+  idempotencyKey: number
   inputToken: number
   outputToken: number
   amount: number
@@ -102,6 +105,7 @@ export type OrderSumAggregateInputType = {
 
 export type OrderMinAggregateInputType = {
   id?: true
+  idempotencyKey?: true
   inputToken?: true
   outputToken?: true
   amount?: true
@@ -118,6 +122,7 @@ export type OrderMinAggregateInputType = {
 
 export type OrderMaxAggregateInputType = {
   id?: true
+  idempotencyKey?: true
   inputToken?: true
   outputToken?: true
   amount?: true
@@ -134,6 +139,7 @@ export type OrderMaxAggregateInputType = {
 
 export type OrderCountAggregateInputType = {
   id?: true
+  idempotencyKey?: true
   inputToken?: true
   outputToken?: true
   amount?: true
@@ -237,6 +243,7 @@ export type OrderGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 
 export type OrderGroupByOutputType = {
   id: string
+  idempotencyKey: string
   inputToken: string
   outputToken: string
   amount: number
@@ -276,6 +283,7 @@ export type OrderWhereInput = {
   OR?: Prisma.OrderWhereInput[]
   NOT?: Prisma.OrderWhereInput | Prisma.OrderWhereInput[]
   id?: Prisma.StringFilter<"Order"> | string
+  idempotencyKey?: Prisma.StringFilter<"Order"> | string
   inputToken?: Prisma.StringFilter<"Order"> | string
   outputToken?: Prisma.StringFilter<"Order"> | string
   amount?: Prisma.FloatFilter<"Order"> | number
@@ -292,6 +300,7 @@ export type OrderWhereInput = {
 
 export type OrderOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  idempotencyKey?: Prisma.SortOrder
   inputToken?: Prisma.SortOrder
   outputToken?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -308,6 +317,7 @@ export type OrderOrderByWithRelationInput = {
 
 export type OrderWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  idempotencyKey?: string
   AND?: Prisma.OrderWhereInput | Prisma.OrderWhereInput[]
   OR?: Prisma.OrderWhereInput[]
   NOT?: Prisma.OrderWhereInput | Prisma.OrderWhereInput[]
@@ -323,10 +333,11 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
   error?: Prisma.StringNullableFilter<"Order"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Order"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Order"> | Date | string
-}, "id">
+}, "id" | "idempotencyKey">
 
 export type OrderOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  idempotencyKey?: Prisma.SortOrder
   inputToken?: Prisma.SortOrder
   outputToken?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -351,6 +362,7 @@ export type OrderScalarWhereWithAggregatesInput = {
   OR?: Prisma.OrderScalarWhereWithAggregatesInput[]
   NOT?: Prisma.OrderScalarWhereWithAggregatesInput | Prisma.OrderScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Order"> | string
+  idempotencyKey?: Prisma.StringWithAggregatesFilter<"Order"> | string
   inputToken?: Prisma.StringWithAggregatesFilter<"Order"> | string
   outputToken?: Prisma.StringWithAggregatesFilter<"Order"> | string
   amount?: Prisma.FloatWithAggregatesFilter<"Order"> | number
@@ -367,6 +379,7 @@ export type OrderScalarWhereWithAggregatesInput = {
 
 export type OrderCreateInput = {
   id?: string
+  idempotencyKey: string
   inputToken: string
   outputToken: string
   amount: number
@@ -383,6 +396,7 @@ export type OrderCreateInput = {
 
 export type OrderUncheckedCreateInput = {
   id?: string
+  idempotencyKey: string
   inputToken: string
   outputToken: string
   amount: number
@@ -399,6 +413,7 @@ export type OrderUncheckedCreateInput = {
 
 export type OrderUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   inputToken?: Prisma.StringFieldUpdateOperationsInput | string
   outputToken?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -415,6 +430,7 @@ export type OrderUpdateInput = {
 
 export type OrderUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   inputToken?: Prisma.StringFieldUpdateOperationsInput | string
   outputToken?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -431,6 +447,7 @@ export type OrderUncheckedUpdateInput = {
 
 export type OrderCreateManyInput = {
   id?: string
+  idempotencyKey: string
   inputToken: string
   outputToken: string
   amount: number
@@ -447,6 +464,7 @@ export type OrderCreateManyInput = {
 
 export type OrderUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   inputToken?: Prisma.StringFieldUpdateOperationsInput | string
   outputToken?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -463,6 +481,7 @@ export type OrderUpdateManyMutationInput = {
 
 export type OrderUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  idempotencyKey?: Prisma.StringFieldUpdateOperationsInput | string
   inputToken?: Prisma.StringFieldUpdateOperationsInput | string
   outputToken?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -479,6 +498,7 @@ export type OrderUncheckedUpdateManyInput = {
 
 export type OrderCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  idempotencyKey?: Prisma.SortOrder
   inputToken?: Prisma.SortOrder
   outputToken?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -501,6 +521,7 @@ export type OrderAvgOrderByAggregateInput = {
 
 export type OrderMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  idempotencyKey?: Prisma.SortOrder
   inputToken?: Prisma.SortOrder
   outputToken?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -517,6 +538,7 @@ export type OrderMaxOrderByAggregateInput = {
 
 export type OrderMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  idempotencyKey?: Prisma.SortOrder
   inputToken?: Prisma.SortOrder
   outputToken?: Prisma.SortOrder
   amount?: Prisma.SortOrder
@@ -573,6 +595,7 @@ export type DateTimeFieldUpdateOperationsInput = {
 
 export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  idempotencyKey?: boolean
   inputToken?: boolean
   outputToken?: boolean
   amount?: boolean
@@ -589,6 +612,7 @@ export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 
 export type OrderSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  idempotencyKey?: boolean
   inputToken?: boolean
   outputToken?: boolean
   amount?: boolean
@@ -605,6 +629,7 @@ export type OrderSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 
 export type OrderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  idempotencyKey?: boolean
   inputToken?: boolean
   outputToken?: boolean
   amount?: boolean
@@ -621,6 +646,7 @@ export type OrderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 
 export type OrderSelectScalar = {
   id?: boolean
+  idempotencyKey?: boolean
   inputToken?: boolean
   outputToken?: boolean
   amount?: boolean
@@ -635,13 +661,14 @@ export type OrderSelectScalar = {
   updatedAt?: boolean
 }
 
-export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "inputToken" | "outputToken" | "amount" | "slippage" | "orderType" | "status" | "dex" | "executionPrice" | "txHash" | "error" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
+export type OrderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "idempotencyKey" | "inputToken" | "outputToken" | "amount" | "slippage" | "orderType" | "status" | "dex" | "executionPrice" | "txHash" | "error" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
 
 export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Order"
   objects: {}
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    idempotencyKey: string
     inputToken: string
     outputToken: string
     amount: number
@@ -1078,6 +1105,7 @@ export interface Prisma__OrderClient<T, Null = never, ExtArgs extends runtime.Ty
  */
 export interface OrderFieldRefs {
   readonly id: Prisma.FieldRef<"Order", 'String'>
+  readonly idempotencyKey: Prisma.FieldRef<"Order", 'String'>
   readonly inputToken: Prisma.FieldRef<"Order", 'String'>
   readonly outputToken: Prisma.FieldRef<"Order", 'String'>
   readonly amount: Prisma.FieldRef<"Order", 'Float'>

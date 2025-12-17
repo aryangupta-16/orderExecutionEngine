@@ -22,6 +22,7 @@ async function processOrder(job: Job<OrderJobData>) {
       amount,
       slippage,
     });
+    // await new Promise((resolve) => setTimeout(resolve, 20000));
 
     // Save selected DEX
     await OrderRepository.updateStatus(orderId, "ROUTING", {
@@ -91,8 +92,8 @@ export const orderWorker = new Worker<OrderJobData>(
   processOrder,
   {
     connection: {
-      host: "localhost",
-      port: 6379,
+      url: process.env.REDIS_URL!, 
+      tls: process.env.REDIS_URL?.startsWith("rediss://") ? {} : undefined,
     },
     concurrency: 5,
   }

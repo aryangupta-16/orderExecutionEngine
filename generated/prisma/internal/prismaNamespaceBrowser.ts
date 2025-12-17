@@ -72,6 +72,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const OrderScalarFieldEnum = {
   id: 'id',
+  idempotencyKey: 'idempotencyKey',
   inputToken: 'inputToken',
   outputToken: 'outputToken',
   amount: 'amount',

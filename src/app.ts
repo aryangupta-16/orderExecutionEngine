@@ -2,7 +2,7 @@
 import Fastify from "fastify";
 import websocket from "@fastify/websocket";
 import pino from "pino";
-import "./queue/order.worker";
+// import "./queue/order.worker";
 
 
 // routes
