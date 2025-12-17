@@ -1,4 +1,4 @@
-# Solana DEX Order Execution Engine
+# DEX Order Execution Engine
 
 A high-performance, asynchronous order execution system for Solana DEXs with real-time WebSocket updates. This implementation focuses on market orders with DEX routing between Raydium and Meteora.
 
@@ -14,7 +14,7 @@ A high-performance, asynchronous order execution system for Solana DEXs with rea
 
 ```
 Client → API Server (Fastify) → BullMQ Queue → Worker → DEX (Raydium/Meteora)
-     ↑                                ↓                     ↓
+     ↑                                ↓                     
      └────── WebSocket ←───── Redis Pub/Sub ←───────┘
 ```
 
@@ -32,15 +32,14 @@ Client → API Server (Fastify) → BullMQ Queue → Worker → DEX (Raydium/Met
 
 - Node.js 18+
 - Docker & Docker Compose
-- pnpm (recommended) or npm
+- npm
 
 ### Setup
 
 1. **Clone and install dependencies**
    ```bash
-   git clone https://github.com/yourusername/solana-dex-engine.git
-   cd solana-dex-engine
-   pnpm install
+   git clone https://github.com/aryangupta-16/orderExecutionEngine
+   npm install
    ```
 
 2. **Configure environment**
@@ -55,16 +54,16 @@ Client → API Server (Fastify) → BullMQ Queue → Worker → DEX (Raydium/Met
    docker compose up -d
    
    # Run database migrations
-   pnpm prisma migrate dev
+   npm prisma migrate dev
    ```
 
 4. **Start the services**
    ```bash
    # Terminal 1 - API Server
-   pnpm dev
+   npm dev
 
    # Terminal 2 - Worker
-   pnpm worker:dev
+   npm worker:dev
    ```
 
 ## 📡 API Reference
@@ -78,8 +77,7 @@ Idempotency-Key: your-unique-key
 {
   "inputToken": "SOL",
   "outputToken": "USDC",
-  "amount": 1.5,
-  "orderType": "MARKET",
+  "amount": 1,
   "slippage": 0.5
 }
 ```
@@ -87,7 +85,7 @@ Idempotency-Key: your-unique-key
 ### WebSocket Connection
 Connect to receive real-time order updates:
 ```
-ws://localhost:8000/api/orders/ws?orderId=<orderId>
+ws://localhost:8000/api/orders?orderId=<orderId>
 ```
 
 ### Order Status Flow
@@ -102,10 +100,10 @@ ws://localhost:8000/api/orders/ws?orderId=<orderId>
 
 ```bash
 # Run unit tests
-pnpm test
+npm test
 
 # Run tests with coverage
-pnpm test:coverage
+npm test:coverage
 ```
 
 ## 🛠️ Development
@@ -121,6 +119,9 @@ PORT=8000
 ```bash
 
 # Generate Prisma client
-pnpm prisma generate
+npm prisma generate
+
+# create migrations
+npm migrate dev
 ```
 
