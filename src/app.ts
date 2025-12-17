@@ -5,7 +5,7 @@ import pino from "pino";
 import cors from "@fastify/cors";
 import "./redis/redis.subscriber";
 
-// import "./queue/order.worker";
+import "./queue/order.worker";
 
 
 // routes
