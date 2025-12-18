@@ -3,8 +3,8 @@ import Fastify from "fastify";
 import websocket from "@fastify/websocket";
 import pino from "pino";
 import cors from "@fastify/cors";
+import { logger } from "./utils/logger";
 import "./redis/redis.subscriber";
-
 import "./queue/order.worker";
 
 
@@ -14,9 +14,8 @@ import { ordersRoutes } from "./api/orders/orders.routes";
 export function buildApp() {
   // Create Fastify instance with logger
   const app = Fastify({
-    logger: {
-      level: "info",
-    },
+    logger: true, 
+    trustProxy: true,
   });
 
   // Register WebSocket plugin

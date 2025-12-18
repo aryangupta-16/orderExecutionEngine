@@ -28,10 +28,10 @@ export async function orderWebSocketHandler(
       error: order.error,
     });
   } else {
-//     wsManager.send(orderId, {
-//       status: "pending",
-//       message: "Order received and queued",
-//     });
+    wsManager.send(orderId, {
+      status: "pending",
+      message: "Order received and queued",
+    });
   }
 
   // Cleanup on disconnect

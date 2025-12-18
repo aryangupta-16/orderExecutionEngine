@@ -1,7 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { orderQueue } from "../../queue/order.queue";
 import { OrderRepository } from "../../db/order.repository";
-// import { OrderStatus } from "@prisma/client";
 
 interface CreateOrderBody {
     inputToken: string;
@@ -15,21 +14,19 @@ export async function createOrderController(
     reply: FastifyReply
 ) {
     const { inputToken, outputToken, amount, slippage } = request.body;
-
     const idempotencyKey = request.headers["idempotency-key"] as string;
 
     if (!idempotencyKey) {
         throw new Error("Idempotency-Key header is required");
     }
 
-    const existingOrder =
-        await OrderRepository.findByIdempotencyKey(idempotencyKey);
+    const existingOrder = await OrderRepository.findByIdempotencyKey(idempotencyKey);
 
     if (existingOrder) {
+        request.log.info({ orderId: existingOrder.id }, "Returning existing order for idempotency key");
         return reply.send(existingOrder);
     }
 
-    // 1️⃣ Basic validation
     if (!inputToken || !outputToken) {
         return reply.status(400).send({ error: "Invalid tokens" });
     }
@@ -43,7 +40,6 @@ export async function createOrderController(
     }
 
     try {
-        // 2️⃣ Save order in DB with status PENDING
         const order = await OrderRepository.create({
             idempotencyKey,
             inputToken,
@@ -67,11 +63,11 @@ export async function createOrderController(
             }
         );
 
-        request.log.info({ orderId }, "Job added to queue");
+        request.log.info({ orderId }, "Order created and job added to queue");
 
         return reply.status(201).send({ orderId });
     } catch (err: any) {
-        request.log.error(err, "Error creating order");
+        request.log.error({ err }, "Error creating order");
         return reply.status(500).send({ error: "Failed to create order" });
     }
 }

@@ -1,5 +1,6 @@
 import Redis from "ioredis";
 import { wsManager } from "../ws/ws.manager";
+import { logger } from "../utils/logger";
 
 // Create a separate Redis connection for subscribing
 const subscriber = new Redis(process.env.REDIS_URL!, {
@@ -9,9 +10,9 @@ const subscriber = new Redis(process.env.REDIS_URL!, {
 // Subscribe to the channel
 subscriber.subscribe("order_updates", (err) => {
   if (err) {
-    console.error("❌ Failed to subscribe to Redis channel", err);
+    logger.error({ err }, "Failed to subscribe to Redis channel");
   } else {
-    console.log("✅ Subscribed to Redis channel: order_updates");
+    logger.info("Subscribed to Redis channel: order_updates");
   }
 });
 
@@ -19,15 +20,14 @@ subscriber.subscribe("order_updates", (err) => {
 subscriber.on("message", (channel, message) => {
   try {
     const data = JSON.parse(message);
-    // console.log(data,"data in redis.subscriber");   
     const { orderId, ...payload } = data;
 
     if (!orderId) return;
 
-    console.log("📥 Redis event received:", data);
+    logger.debug({ orderId, payload }, "Redis event received");
 
     wsManager.send(orderId, payload);
   } catch (err) {
-    console.error("❌ Error handling Redis message", err);
+    logger.error({ err }, "Error handling Redis message");
   }
 });
