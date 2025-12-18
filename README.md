@@ -69,6 +69,9 @@ Client → API Server (Fastify) → BullMQ Queue → Worker → DEX (Raydium/Met
 ## 📡 API Reference
 
 ### Submit Order
+
+https://orderexecutionengine-4kz5.onrender.com/api/orders/execute
+
 ```http
 POST /api/orders/execute
 Content-Type: application/json
@@ -86,6 +89,8 @@ Idempotency-Key: your-unique-key
 Connect to receive real-time order updates:
 ```
 ws://localhost:8000/api/orders?orderId=<orderId>
+
+wss://orderexecutionengine-4kz5.onrender.com/api/orders/execute?orderId=af6d839f-58fc-4af7-8828-8264bed07abe
 ```
 
 ### Order Status Flow
